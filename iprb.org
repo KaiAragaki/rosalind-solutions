@@ -1,0 +1,57 @@
+#+PROPERTY: header-args:python :session *python*
+
+The problem is as follows:
+
+#+begin_quote
+Given: Three positive integers k, m, and n, representing a population containing k+m+n organisms: k individuals are homozygous dominant for a factor, m are heterozygous, and n are homozygous recessive.
+
+Return: The probability that two randomly selected mating organisms will produce an individual possessing a dominant allele (and thus displaying the dominant phenotype). Assume that any two organisms can mate.
+#+end_quote
+
+The first problem: How do we determine what the probability of getting two separate organisms from a population is?
+
+Notably, the organisms have to be different (no self mating), order is not important, and one organism of a given genotype is indistinct from another.
+
+To do this, I've decided to use a multivariate hypergeometric probability. This can be used when you have - say - any number of different colors of marbles in an urn, and you want to know the probability of getting - say again - 1 red and 1 blue. Really handy, seems almost perfect for our use-case.
+
+Fortunately, the scipy.stats library has a builtin function for us:
+
+#+begin_src python
+import scipy.stats as sps
+
+sps.multivariate_hypergeom.pmf(x=[2, 2, 2], m=[5, 10, 15], n=6)
+#+end_src
+
+#+RESULTS:
+: 0.07957559681697617
+
+Now we need to think about this biologically.
+
+There are several possible pairings, each with their associated probabilities of producing progeny with a dominant phenotype:
+
+P(kk) = 1
+P(km) = 1
+P(kn) = 1
+P(mm) = .75
+P(mn) = .5
+P(nn) = 0
+
+So, we simply need to know the probabilities of these pairings - which the above function can tell us. This can be parameterized to the following solution:
+
+#+begin_src python
+nk = 17
+nm = 27
+nn = 22
+
+pkk = sps.multivariate_hypergeom.pmf(x=[2, 0, 0], m=[nk, nm, nn], n=2)
+pkm = sps.multivariate_hypergeom.pmf(x=[1, 1, 0], m=[nk, nm, nn], n=2)
+pkn = sps.multivariate_hypergeom.pmf(x=[1, 0, 1], m=[nk, nm, nn], n=2)
+pmm = sps.multivariate_hypergeom.pmf(x=[0, 2, 0], m=[nk, nm, nn], n=2)
+pmn = sps.multivariate_hypergeom.pmf(x=[0, 1, 1], m=[nk, nm, nn], n=2)
+pnn = sps.multivariate_hypergeom.pmf(x=[0, 0, 2], m=[nk, nm, nn], n=2)
+
+1 * pkk + 1 * pkm + 1 * pkn + .75 * pmm + .5 * pmn
+#+end_src
+
+#+RESULTS:
+: 0.7129370629370619

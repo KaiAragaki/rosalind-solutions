@@ -1,0 +1,50 @@
+#+PROPERTY: header-args:python :session *python*
+
+So: rabbits.
+
+Here's the problem:
+
+Given: Positive integers n ≤ 40 and k ≤ 5.
+
+Return: The total number of rabbit pairs that will be present after n months, if we begin with 1 pair and in each generation, every pair of reproduction-age rabbits produces a litter of k rabbit pairs (instead of only 1 pair).
+
+Let's start with one pair of rabbits (not yet mature) that produces 3 pairs of rabbits per month.
+
+1 (young)
+1 (mature)
+1 (mature) 3 (young)
+1 (mature) 3 (mature) 3 (young)
+1 (mature) 3 (mature) 3 (mature) 3 (young) 9 (young)
+
+1
+1
+4
+7
+19
+
+
+
+Current number - previous number = diff
+
+previous number * 3 + current number
+
+4*3 + 7 = 12 + 9
+
+#+begin_src python
+n = 5
+k = 3
+
+curr = 1
+prev = 1
+
+for i in range(6):
+    print(i)
+    #working = prev * k + curr
+    #prev = curr
+    #curr = working
+
+
+#+end_src
+
+#+RESULTS:
+: 5

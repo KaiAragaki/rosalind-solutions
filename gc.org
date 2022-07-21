@@ -1,0 +1,22 @@
+#+PROPERTY: header-args:python :session *python*
+
+#+begin_src python
+from Bio import SeqIO
+
+max_gc = 0
+
+for record in SeqIO.parse("rosalind_gc.txt", "fasta"):
+    seq = record.seq
+    ng = seq.count("G")
+    nc = seq.count("C")
+    nall = len(seq)
+    gc_pct = (ng + nc)/nall * 100
+    if (gc_pct > max_gc):
+        max_gc = gc_pct
+        max_id = record.id
+
+return (max_id, max_gc)
+#+end_src
+
+#+RESULTS:
+| Rosalind_0414 | 53.15126050420168 |

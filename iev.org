@@ -1,0 +1,34 @@
+#+PROPERTY: header-args:python :session *python*
+Declare variables:
+#+begin_src python
+v1 = 1
+v2 = 0
+v3 = 0
+v4 = 1
+v5 = 0
+v6 = 1
+#+end_src
+
+#+RESULTS:
+: None
+
+We multiply the probability of getting a dominant phenotype offspring by the number of pairs in the population
+#+begin_src python
+pv1 = v1 * 1
+pv2 = v2 * 1
+pv3 = v3 * 1
+pv4 = v4 * .75
+pv5 = v5 * .5
+pv6 = v6 * 0
+#+end_src
+
+#+RESULTS:
+
+So the expectation value for this population if each couple had two children is
+
+#+begin_src python
+2 * (pv1 + pv2 + pv3 + pv4 + pv5 + pv6)
+
+#+end_src
+
+#+RESULTS:

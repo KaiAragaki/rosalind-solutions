@@ -1,0 +1,10 @@
+#+PROPERTY: header-args:python :session *python* :results value
+
+#+begin_src python
+f = open("rosalind_subs.txt", "r")
+line_one = f.readline()
+line_two = f.readline()
+return line_one
+#+end_src
+
+#+RESULTS:
