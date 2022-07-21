@@ -1,10 +1,18 @@
 #+PROPERTY: header-args:python :session *python* :results value
 
 #+begin_src python
-f = open("rosalind_subs.txt", "r")
+f = open("rosalind_hamm.txt", "r")
 line_one = f.readline()
 line_two = f.readline()
-return line_one
+
+dist = 0
+
+for char in range(len(line_one)):
+    if (line_one[char] != line_two[char]):
+        dist = dist + 1
+
+dist
 #+end_src
 
 #+RESULTS:
+: 468
