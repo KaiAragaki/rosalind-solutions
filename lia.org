@@ -1,0 +1,122 @@
+#+PROPERTY: header-args:python :session *python* :results value
+
+#+begin_src python
+f = open("rosalind_ila.txt", "r")
+aa_string = f.readline()
+#+end_src
+
+The solution was incredibly simple once I realized that ANY genotype crossed with an Aa genotype partner will result in a Aa child 50% of the time.
+
+From then, it was as simple as:
+#+begin_src python
+from scipy.stats import binom
+k = 5
+N =  8
+num_trials = 2**k
+lt_successes = N-1
+1-binom.cdf(lt_successes, num_trials, 0.25)
+#+end_src
+
+#+RESULTS:
+: 0.5675291577424668
+
+
+
+The probability of getting some genotype from two parents of some genotype:
+
+#+begin_src python
+def p_f_geno (f_geno, p1_geno, p2_geno):
+    pna1 = p1_geno.count("A")/2
+    pna2 = p2_geno.count("A")/2
+    if (f_geno == "AA"):
+        return pna1*pna2
+    if (f_geno == "Aa"):
+        return pna1*(1-pna2) + pna2*(1-pna1)
+    if (f_geno == "aa"):
+        return (1-pna1)*(1-pna2)
+
+p_f_geno("Aa", "aA", "Aa")
+#+end_src
+
+#+RESULTS:
+: 0.5
+
+We start with 0th gen 'Tom' of genotype AaBb. If crossed with AaBb, the distribution of genotypes is as follows:
+
+Since A and B are separate factors, we can calculate them through multiplication.
+AABB
+AABb
+AAbb
+AaBB
+AaBb
+Aabb
+aaBB
+aaBb
+aabb
+
+The distribution of genotypes will be
+
+1:4:6:4:1
+
+   (A) (a)
+(A)
+(a)
+
+The probability of getting each one of these is simply the probability of getting an individual factor's genotype with the probability of getting the other factor's genotype. That is, for example:
+
+P(AA) x P(BB)
+
+The probability of an individual factor's genotype can be stated as, in the case of AA,
+
+P(AA) = (num_A_par_1)/2 x (num_A_par_2)/2
+
+In this case, since we are looking at a cross that is always with an organism that is heterozygous for every factor, it becomes:
+
+P(AA) = (num_A_par_1)/2 x 1/2 = (num_A_par_1)/4
+
+P(A par 1) * P(A par 2)
+
+N = pop size = 2
+K = num success states (say, num A)
+n = number of draws = 2
+k = num of observed sucesses
+
+If par_1 = Aa?
+
+(2/(1))*0.5^1*0.5^1
+je
+
+P = 2/(num_A! * (2-num_A)!) * 0.5^(num_A!) * 0.5^(2-num_A!)
+
+#+begin_src python
+num_A = 2
+
+
+#+end_src
+
+I want to create a generic equation that will tell me what the probability of a given genotype is given two parental genotypes.
+
+A naive approach: Simply cross the parents and tally up the similarities. Divide the tallies by four and you have a probability.
+
+This feels like a somewhat unsatisfying answer since it's kind of like a 'find out and see' solution rather than some kind of closed form equation.
+
+P(par_1) = A = 1/2
+P(par_2) = a = 1/2
+
+P(par_1 = target_1) * P(par_2 = target_2) * N_unique permutations
+suppose
+
+target = Aa
+Cross = Aa, Aa
+
+P(1/2)*P(1/2)*2 = 1/2 v
+
+target = AA
+Cross = Aa, Aa
+
+P(1/2) * P(1/2) * 1 = 1/4
+
+target = Aa
+Cross = AA, aa
+
+P(One_par = tar_1) * P(2nd_par = tar_2)

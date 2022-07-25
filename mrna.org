@@ -1,0 +1,30 @@
+#+PROPERTY: header-args:python :session *python* :results value
+
+#+begin_src python
+f = open("rosalind_mrna.txt", "r")
+
+aa_string = f.readlines()
+num_combos = 1
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python
+for aa in aa_string:
+    if aa in "MW":
+        num_combos = num_combos
+    if aa in "FYHQNKDEC":
+        num_combos = num_combos * 2
+    if aa == "I":
+        num_combos = num_combos * 3
+    if aa in "VPTAG":
+        num_combos = num_combos * 4
+    if aa in "LSR":
+        num_combos = num_combos * 6
+    num_combos = num_combos % 1000000
+
+num_combos * 3
+#+end_src
+
+#+RESULTS:
+: 4

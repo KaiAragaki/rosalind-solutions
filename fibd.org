@@ -1,0 +1,29 @@
+#+PROPERTY: header-args:python :session *python* :results value
+
+#+begin_src python
+# Month to count the number of rabbits:
+n = 6
+# Months rabbits live:
+m = 3
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python
+# Give the loop a history to reach back into
+n_bab = [0] * (m) + [1]
+n_adult = [0] * (m + 1)
+n_death = [0] * (m + 1)
+
+
+for i in range(m, n+m-1):
+    n_death.append(n_bab[i-(m-1)])
+    n_adult.append(n_bab[i] + n_adult[i]-n_death[i+1])
+    n_bab.append(n_adult[i])
+    #n_death[i] = n_bab[-m]
+    #n_adult[i] = n_bab[i-1] + (n_adult[i-1] - n_death[i]) * 2
+n_bab.pop() + n_adult.pop()
+#+end_src
+
+#+RESULTS:
+: 4
