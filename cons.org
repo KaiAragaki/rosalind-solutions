@@ -1,0 +1,21 @@
+#+property: header-args:python :results values :session *Python*
+
+#+begin_src python
+import pandas as pd
+import re
+from Bio import SeqIO
+with open("rosalind_cons.txt", "r") as cons:
+    l = [str(record.seq) for record in SeqIO.parse(cons, "fasta")]
+    df = pd.DataFrame(l)
+    df = df[0].apply(lambda x: pd.Series(list(x)))
+    a = df.apply(lambda x: x.value_counts()).fillna(0).astype(int)
+    b = a.idxmax()
+    c = b.to_string(index=False).replace("\n", "").replace(" ","").strip()
+    d = a.to_string().replace("  ", " ")
+    d = re.sub("([ACGT])", r"\1:", d)
+
+    print(c)
+    print(d)
+#+end_src
+
+#+RESULTS:

@@ -1,0 +1,28 @@
+#+property: header-args:python :results values :session *python*
+
+#+begin_src python
+import pandas as pd
+wt = pd.read_csv("protein_mass.tsv", sep="   ", engine = "python", names = ["aa", "mass"], index_col=False)
+wt.set_index('aa', inplace=True)
+wt = wt.transpose()
+wt = wt.to_dict('list')
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python
+f = open("rosalind_prtm.txt", "r")
+aas = f.readline()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python
+str_wt = 0
+for char in aas:
+    print(wt[str(char)][0])
+    str_wt = str_wt + wt[str(char)][0]
+str_wt
+#+end_src
+
+#+RESULTS:

@@ -1,0 +1,18 @@
+#+property: header-args:python :results values :session *python*
+
+#+begin_src python
+from Bio import SeqIO
+for record in SeqIO.parse("rosalind_grph.txt", "fasta"):
+    compare_with = record
+    cw_post = compare_with.seq[-3:]
+    for record2 in SeqIO.parse("rosalind_grph.txt", "fasta"):
+        if (compare_with.id == record2.id):
+            pass
+        else:
+            compare_to = record2
+            ct_pre = compare_to.seq[:3]
+            if(cw_post == ct_pre):
+                print(compare_with.id, compare_to.id)
+#+end_src
+
+#+RESULTS:

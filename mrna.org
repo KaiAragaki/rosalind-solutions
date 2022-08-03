@@ -3,7 +3,7 @@
 #+begin_src python
 f = open("rosalind_mrna.txt", "r")
 
-aa_string = f.readlines()
+aa_string = f.readline()
 num_combos = 1
 #+end_src
 
@@ -27,4 +27,4 @@ num_combos * 3
 #+end_src
 
 #+RESULTS:
-: 4
+: 936192

@@ -1,0 +1,29 @@
+#+property: header-args:python :results values :session *Python*
+
+#+begin_src python :results output
+from Bio import SeqIO
+import regex
+
+def get_prots(seq, offset, rev):
+    if rev == True:
+        seq = seq.reverse_complement()
+    seq_offset = seq[offset:]
+    translated = seq_offset.translate()
+    t = translated.split("*")
+    not_last = t[:-1]
+    ms = [regex.findall("M.*", str(x), overlapped = True) for x in not_last]
+    return [x for x in ms if x]
+
+
+with open("rosalind_orf.txt") as file, open("rosalind_orf_solution.txt", "a") as soln:
+    records = SeqIO.parse(file, "fasta")
+    for record in records:
+        combos = [(x, y) for x in range(3) for y in (False, True)]
+        res = [get_prots(record.seq, x, y) for x, y in combos]
+        res2 = [a for z in res for x in z for a in x]
+        unique_res = list(set(res2))
+        soln.write("\n".join(unique_res))
+
+#+end_src
+
+#+RESULTS:

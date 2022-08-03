@@ -2,9 +2,9 @@
 
 #+begin_src python
 # Month to count the number of rabbits:
-n = 6
+n = 85
 # Months rabbits live:
-m = 3
+m = 16
 #+end_src
 
 #+RESULTS:
@@ -26,4 +26,4 @@ n_bab.pop() + n_adult.pop()
 #+end_src
 
 #+RESULTS:
-: 4
+: 255986189829394641

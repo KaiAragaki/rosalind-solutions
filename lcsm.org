@@ -1,0 +1,82 @@
+#+property: header-args:python :session *Python* :results values
+
+In order to find the consensus sequence, we may have to perform a LOT of searches. What's the best way to do this?
+
+One way to do this is a kind of binary search.
+
+Suppose we use one strand as a query and the others we search against.
+
+We will perform at least one search (one against the next, and find that it fails)
+We will perform at most N searches, where N+1 is the number of strands, and exhaust our searches. Either we find a match (and are finished) or we fail on the last one.
+
+From there, we can halve our queries. Suppose right in half.
+
+Then we talk half of strand one.
+If it fails, we move to the other half
+If it succeeds, we should look halfway between the whole string and half of the string.
+
+
+You know what, I think the best way to go about doing this is from the top.
+For each search,
+We will perform at least one search (one against the next, and find that it fails)
+We will perform at most N searches, where N+1 is the number of strands, and exhaust our searches. Either we find a match (and are finished) or we fail on the last one.
+
+First try the whole string (if we wanted to save a bit of time, we would have our first string be the smallest string, since we won't get a consensus out of anything longer. But let's assume they're all the same size)
+
+For each search, search the string, then inch along one nucleotide to the right (drop one off the front, add one on the tail)
+
+If at any point there is a consensus, stop. This is the solution.
+
+Else, keep going.
+
+At worst, this will involve:
+
+Assume k = 100 strands, and all are 1000 bp
+
+First iteration = 99 searches
+Second: 99 * 2
+Third: 99 * 3...
+...
+Sum = 99 + 99*2 + 99*3 = 99*(1+2+3...1000) = 99 * (1001*500) = 500500*99 = 49,549,500
+(Though the chances of only a single nucleotide consensus sequence is extremly low)
+(Additionally, having to all 99 searches every time is nearly unheard of)
+
+
+
+
+#+begin_src python
+from Bio import SeqIO
+
+with open("rosalind_lcsm.txt") as f:
+    records = SeqIO.parse(f, "fasta")
+    seqs = [str(x.seq) for x in records]
+    smallest = min(seqs, key=len)
+    working_len = len(smallest)
+    answer_found = False
+    iters = 0
+    for i in range(len(smallest)):
+        if answer_found == True:
+            break
+        for j in range(len(smallest) - working_len):
+            if answer_found == True:
+                break
+            working_seq = smallest[j:working_len+j]
+            num_match = 0
+            for seq in seqs:
+                iters += 1
+                if working_seq in seq:
+                    num_match += 1
+                else:
+                    break
+                if num_match == len(seqs):
+                    print('ANSWER: ', working_seq)
+                    answer_found = True
+        working_len -= 1
+print("Number of iterations: ", iters)
+
+
+
+#+end_src
+
+#+RESULTS:
+: None

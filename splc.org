@@ -1,0 +1,19 @@
+#+property: header-args:python :session *Python* :results values
+
+#+begin_src python
+from Bio import SeqIO
+import regex as re
+with open("rosalind_splc.txt") as f:
+    records = SeqIO.parse(f, "fasta")
+    seqs = [str(x.seq) for x in records]
+    main = seqs[0]
+    no_main = seqs[1:]
+    for seq in no_main:
+        main = re.sub(seq, "", main)
+    res = Seq(main).translate()
+
+res
+#+end_src
+
+#+RESULTS:
+: MAKARALPPCDTLGSIGLLPFRPSLPYNKLIFLICTGESWAILLPTTPCDPSDSTRCIKGARFYHFPNIRKALTTTKYTACFVALQDVLVDSVPTGSHLGVLYSLSSSWHRSMPCITAYRRVVRATCDRLLVKGASRAGPNRIFCLDGRSHDQSDPKGRKGSRDAEIIRRQSPRIDNTSKLECV*

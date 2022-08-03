@@ -1,0 +1,22 @@
+#+property: header-args:python :results values :session *python*
+
+#+begin_src python
+import re
+import requests
+from io import StringIO
+from Bio import SeqIO
+f = open("rosalind_mprt.txt", "r")
+for line in f:
+    url = "https://rest.uniprot.org/uniprotkb/" + re.search("[^_\n]*", line).group() + ".fasta"
+    response = requests.get(url)
+    parsed = SeqIO.parse(StringIO(response.text), "fasta")
+    for record in parsed:
+        seq = record.seq
+        matches = [str(x.start()+1) for x in re.finditer("(?=(N[^P][S|T][^P]))", str(seq))]
+        if (len(matches) > 0):
+            print(line, end="")
+            print(' '.join(matches))
+
+#+end_src
+
+#+RESULTS:
