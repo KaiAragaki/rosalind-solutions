@@ -1,0 +1,36 @@
+#+property: header-args:python :session *Python* :results values
+
+#+begin_src python
+from Bio import SeqIO
+print('\n')
+with open("./rosalind_revp.txt") as f, open("./rosalind_revp_soln.txt", "w") as soln:
+    for record in SeqIO.parse(f, "fasta"):
+        seq = record.seq
+        seed_sites = []
+        # Initially sweep through and find where the smallest palindrome 'seed sites' are.
+        for window_start in range(len(seq)-3):
+            window = seq[window_start:window_start+2]
+            rc_window = seq[window_start+2:window_start+4].reverse_complement()
+            if window == rc_window:
+                seed_sites.append(window_start)
+                soln.write(str(window_start+1) + " " + "4" + "\n")
+
+        old_seeds = seed_sites
+
+        for window_size in range(3, len(seq)):
+            new_seeds = []
+            for seed in old_seeds:
+                window_start = seed - (window_size-2)
+                window_end = window_start + window_size
+                rc_window_start = window_start + window_size
+                rc_window_end = window_end + window_size
+
+                window = seq[window_start:window_end]
+                rc_window = seq[rc_window_start:rc_window_end].reverse_complement()
+                if window == rc_window:
+                    soln.write(str(window_start+1) + " " + str(window_size*2) + "\n")
+                    new_seeds.append(seed)
+            old_seeds = new_seeds
+#+end_src
+
+#+RESULTS:

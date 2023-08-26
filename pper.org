@@ -1,0 +1,16 @@
+#+property: header-args:python :session *Python* :results values
+
+#+begin_src python
+n = 91
+k = 10
+perms = 1
+for i in range(k):
+    perms = (n * perms) % 1000000
+    n -= 1
+print(perms)
+
+
+#+end_src
+
+#+RESULTS:
+: None

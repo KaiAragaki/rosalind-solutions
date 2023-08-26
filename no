@@ -1,0 +1,28 @@
+#+property: header-args:python :results values
+
+#+begin_src python
+from Bio import SeqIO
+import regex
+
+def get_first_prot(seq):
+    t = seq.translate().split("*")[0]
+    res = regex.findall("M.*", str(t), overlapped = True)
+    if res is not None:
+        return res.group()
+    else:
+        return None
+
+with open("rosalind_orf.txt") as file:
+    records = SeqIO.parse(file, "fasta")
+    for record in records:
+        s = record.seq
+        p = print(get_first_prot(s))
+        p1 = print(get_first_prot(s[1:]))
+        p2 = print(get_first_prot(s[2:]))
+        src = s.reverse_complement()
+        prc = print(get_first_prot(src))
+        prc1 = print(get_first_prot(src[1:]))
+        prc2 = print(get_first_prot(src[2:]))
+#+end_src
+
+#+RESULTS:

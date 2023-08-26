@@ -1,0 +1,17 @@
+#+property: header-args:python :results values :session *Python*
+
+#+begin_src python
+import itertools as it
+import math as mt
+length = 5
+
+perms = it.permutations(range(1, length+1))
+with open('rosalind_perm_soln.txt', "w") as f:
+    f.write(str(mt.factorial(length)) + '\n')
+    for perm in perms:
+        f.write(' '.join(map(str, perm)) + '\n')
+
+
+#+end_src
+
+#+RESULTS:

@@ -1,0 +1,14 @@
+#+property: header-args:python :session *Python* :results values
+
+#+begin_src python
+from Bio import SeqIO
+import math
+
+with open("rosalind_pmch.txt") as f:
+    for record in SeqIO.parse(f, 'fasta'):
+        seq = record.seq
+        print(math.factorial(seq.count("C")) * math.factorial(seq.count("A")))
+
+#+end_src
+
+#+RESULTS:
